@@ -5,7 +5,7 @@ import math
 
 
 class YawnDetector():
-    def __init__(self, MAR_THRESHOLD=0.5, YAWN_THRESHOLD=10):
+    def __init__(self, MAR_THRESHOLD=0.3, YAWN_THRESHOLD=10):
         self.YAWN_COUNT = 0
         self.MAR_THRESHOLD = MAR_THRESHOLD
         self.YAWN_THRESHOLD = YAWN_THRESHOLD
@@ -78,7 +78,7 @@ drawing = mp.solutions.drawing_utils
 cap = cv.VideoCapture(0)
 
 
-yawn_detector = YawnDetector(MAR_THRESHOLD=0.5, YAWN_THRESHOLD=10)
+yawn_detector = YawnDetector(MAR_THRESHOLD=0.3, YAWN_THRESHOLD=10)
 
 while True:
     true, frame = cap.read()
