@@ -1,7 +1,7 @@
 import socket
 
-ESP_32_IP = '192.168.5.9' # Provide the IP addreess of your ESP 32 device here
-PORT = 12345 # Change this to the port number you want to use
+ESP_32_IP =  '192.168.4.1' # Provide the IP addreess of your ESP 32 device here
+PORT = 5000 # Change this to the port number you want to use
 
 while True:
     message = input('Enter the message to send to ESP32 or type "exit" to quit: ')
