@@ -38,6 +38,9 @@ try:
 
         response = sender.response()
         print(f"Response from ESP32: {response}")
+        
+except Exception as e:
+    print(f"An error occurred: \n{e}")
 
 finally:
     sender.close()
