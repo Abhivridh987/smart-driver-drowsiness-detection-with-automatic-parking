@@ -1,26 +1,44 @@
 import socket
 
-ESP_32_IP =  '192.168.4.1' # Provide the IP addreess of your ESP 32 device here
-PORT = 5000 # Change this to the port number you want to use
+ESP_32_IP = "192.168.4.1"
+PORT = 5000
 
-while True:
-    message = input('Enter the message to send to ESP32 or type "exit" to quit: ')
+class Sender():
+    def __init__(self, esp_ip, port):
+        self.esp_ip = esp_ip
+        self.port = port
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
-    if message.lower() == 'exit':
-        break
+    def connect(self):
+        self.sock.connect((self.esp_ip, self.port))
+    
+    def close(self):
+        self.sock.close()
 
-    try:
-        # Create a socket object
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        
-        # Connect to ESP32 Device
-        sock.connect((ESP_32_IP, PORT))
-        
-        # Send the message
-        sock.send(message.encode())
-        
-        response = sock.recv(1024).decode()
-        print(f'Response from ESP32: {response}')
-    except Exception as e:
-        print(f'Error: {e}')
+    def send(self,message):
+        self.sock.sendall((message + "\n").encode("utf-8"))
     
+    def response(self):
+        return self.sock.recv(1024).decode("utf-8")
+    
+
+sender = Sender(ESP_32_IP, PORT)
+
+try:
+    sender.connect()
+    print("Connected to ESP32")
+
+    while True:
+        message = input('Enter message or type "exit" to quit: ')
+
+        if message.lower() == "exit":
+            break
+
+        sender.send(message)
+
+        response = sender.response()
+        print(f"Response from ESP32: {response}")
+
+finally:
+    sender.close()
+    print("Connection closed")

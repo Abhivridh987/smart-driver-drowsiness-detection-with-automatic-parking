@@ -32,19 +32,20 @@ void loop() {
     Serial.println("Laptop connected!");
 
     while (client.connected()) {
+
       if (client.available()) {
-        String message = client.readString();
+
+        String message = client.readStringUntil('\n');
 
         Serial.print("Received: ");
         Serial.println(message);
 
         client.println("Message received by ESP32");
-
-        break;
       }
     }
 
     client.stop();
+
     Serial.println("Laptop disconnected");
   }
 }
