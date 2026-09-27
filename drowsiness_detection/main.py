@@ -4,11 +4,6 @@ import mediapipe as mp
 from detectors.eye_closure import EyeClosureDetector
 from detectors.yawn import YawnDetector
 
-
-# -----------------------------
-# MediaPipe setup
-# -----------------------------
-
 mp_face = mp.solutions.face_mesh
 drawing = mp.solutions.drawing_utils
 
@@ -20,17 +15,7 @@ face_mesh = mp_face.FaceMesh(
     min_tracking_confidence=0.5
 )
 
-
-# -----------------------------
-# Camera setup
-# -----------------------------
-
 cap = cv.VideoCapture(0)
-
-
-# -----------------------------
-# Detector setup
-# -----------------------------
 
 eye_closure_detector = EyeClosureDetector(
     EAR_THRESHOLD=0.22,
@@ -42,35 +27,19 @@ yawn_detector = YawnDetector(
     YAWN_THRESHOLD=10
 )
 
-
-# -----------------------------
-# Main loop
-# -----------------------------
-
 while True:
 
     success, frame = cap.read()
-
     if not success:
         print("Error: Could not read frame from camera.")
         break
 
     frame = cv.flip(frame, 1)
-
     rgb = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
-
     results = face_mesh.process(rgb)
 
-
-    # -----------------------------
-    # Face detected
-    # -----------------------------
-
     if results.multi_face_landmarks:
-
         for face in results.multi_face_landmarks:
-
-            # Draw face mesh
             drawing.draw_landmarks(
                 frame,
                 face,
@@ -78,18 +47,11 @@ while True:
                 landmark_drawing_spec=drawing.DrawingSpec(
                     color=(0, 255, 0),
                     thickness=1,
-                    circle_radius=1
-                ),
+                    circle_radius=1),
                 connection_drawing_spec=drawing.DrawingSpec(
                     color=(255, 0, 0),
-                    thickness=1
-                )
+                    thickness=1)
             )
-
-
-            # -----------------------------
-            # Eye closure detection
-            # -----------------------------
 
             eyes_closed, blink_duration = (
                 eye_closure_detector.eye_closure_detection(
@@ -99,21 +61,11 @@ while True:
                 )
             )
 
-
-            # -----------------------------
-            # Yawn detection
-            # -----------------------------
-
             yawn_detected = yawn_detector.yawn_detection(
                 face,
                 frame,
                 draw=True
             )
-
-
-            # -----------------------------
-            # Terminal output
-            # -----------------------------
 
             print(
                 f"Eyes Closed: {eyes_closed} | "
