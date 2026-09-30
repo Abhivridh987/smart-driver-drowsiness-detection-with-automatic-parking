@@ -3,8 +3,8 @@ import mediapipe as mp
 
 from detectors.eye_closure import EyeClosureDetector
 from detectors.yawn import YawnDetector
-print("a")
 from communication.sender import Sender
+from control_logic_software.control_logic import Control_logic 
 
 mp_face = mp.solutions.face_mesh
 drawing = mp.solutions.drawing_utils
@@ -32,15 +32,14 @@ yawn_detector = YawnDetector(
 
 ESP_32_IP = "192.168.4.1"
 PORT = 5000
-print("a")
+
 sender = Sender(ESP_32_IP, PORT)
-print("b")
+
 try:
-    print("ac")
+    
     sender.connect()
-    print("d")
     print("Connected to ESP32")
-    print("e")
+
     while True:
 
         success, frame = cap.read()
@@ -67,7 +66,7 @@ try:
                         thickness=1)
                 )
 
-                eyes_closed, blink_duration = (
+                eyes_closed, blink_rate = (
                     eye_closure_detector.eye_closure_detection(
                         face,
                         frame,
@@ -81,10 +80,11 @@ try:
                     draw=True
                 )
 
-                message = f"Eyes Closed: {eyes_closed} | Duration: {blink_duration:.2f}s | Yawn: {yawn_detected}" + "\n"
+                message = f"Eyes Closed: {eyes_closed} | Duration: {blink_rate:.2f}s | Yawn: {yawn_detected}" + "\n"
                 print(message)
-
-                sender.send(message)
+                
+                msg = Control_logic().response(yawn_detected, eyes_closed, blink_rate)
+                sender.send(str(msg))
                 response = sender.response()
                 print(f"Response from ESP32: {response}")
                 
