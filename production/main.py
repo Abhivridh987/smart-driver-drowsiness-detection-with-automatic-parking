@@ -102,11 +102,11 @@ try:
         if key == ord('q'):
             break
 except Exception as e:
-    print(f"An error occurred: \n{e}")
+    print(f"An error occurred : \n{e}")
 
 finally:
     sender.close()
     print("Connection closed")
     cap.release()
     cv.destroyAllWindows()
-
+    
