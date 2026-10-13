@@ -1,7 +1,6 @@
 import socket
 
-ESP_32_IP = "192.168.4.1"
-PORT = 5000
+
 
 class Sender():
     def __init__(self, esp_ip, port):
@@ -21,6 +20,11 @@ class Sender():
     def response(self):
         return self.sock.recv(1024).decode("utf-8")
     
+    
+
+
+ESP_32_IP = "192.168.4.1"
+PORT = 5000
 
 sender = Sender(ESP_32_IP, PORT)
 
