@@ -43,7 +43,7 @@ class BuzzerFunctions {
 
     void burst() {
       ledcWrite(buzzerPin, intensity);
-      delay(700);
+      delay(200);
       ledcWrite(buzzerPin, 0);
     }
 

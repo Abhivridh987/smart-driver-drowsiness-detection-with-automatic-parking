@@ -39,10 +39,16 @@ try:
     
     sender.connect()
     print("Connected to ESP32")
-
+    frame_count = 0
     while True:
 
         success, frame = cap.read()
+        if frame_count % 2 == 0:
+            frame_count += 1
+        else:
+            frame_count += 1
+            continue
+        
         if not success:
             print("Error: Could not read frame from camera.")
             break

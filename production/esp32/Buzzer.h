@@ -16,10 +16,10 @@ class Buzzer {
     }
 
     void Buzzer_function(String command) {
-      if (command == "ON") {
+      if (command == "BUZZER_ON") {
         buzzer.on();
       }
-      else if (command == "OFF") {
+      else if (command == "BUZZER_OFF") {
         buzzer.off();
       }
       else if (command == "BUZZER_INCREASE") {
